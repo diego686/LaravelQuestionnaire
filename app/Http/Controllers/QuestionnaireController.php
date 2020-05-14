@@ -10,7 +10,7 @@ class QuestionnaireController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function create()
     {
         return view('questionnaire.create');
@@ -24,16 +24,19 @@ class QuestionnaireController extends Controller
         ]);
 
         // $data['user_id'] = auth()->user()->id;
-
         // $questionnaire = \App\Questionnaire::create($data);
-        
+
         $questionnaire = auth()->user()->questionnaires()->create($data);
 
         return redirect('/questionnaires/' . $questionnaire->id);
     }
-    
+
     public function show(\App\Questionnaire $questionnaire)
     {
+        $questionnaire->load('questions.answers.responses');
+
+
+
         return view('questionnaire.show', compact('questionnaire'));
     }
 }
